@@ -142,6 +142,19 @@ class Snake extends ConfigInterface {
       alert('游戏结束');
       return;
     }
+    //监听蛇自杀
+    let snakeHeader_x = this.body[0]['x'];
+    let snakeHeader_y = this.body[0]['y'];
+    for (let i = 0; i < this.body.length; i++) {
+      let moveSnakeHeader_x = this.body[i][0];
+      let moveSnakeHeader_y = this.body[i][1];
+      if (snakeHeader_x === moveSnakeHeader_x && snakeHeader_y === moveSnakeHeader_y) {
+        this.#reloadGame();
+        alert('自杀了');
+        return;
+      }
+
+    }
     //蛇头坐标和食物坐标
     if (this.body[0].x === this.food.food_x && this.body[0].y === this.food.food_y) {
       let snakeTail_x = this.body[this.body.length - 1]['x'];
