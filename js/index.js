@@ -18,7 +18,10 @@ class ConfigInterface {
       }
     ]
   }
-  getById(el) {
+  $(el){
+    return document.getElementById(el);
+  }
+  node(el) {
     return document.querySelector(el);
   }
   append(el, node) {
@@ -75,11 +78,11 @@ class Food {
 class Snake extends ConfigInterface {
   constructor(option) {
     super();
-    this.map = this.getById(option.el);
+    this.map = this.node(option.el);
     this.food = new Food(this);
     this.games = new Games();
     console.log(this.food)
-    this.start = this.getById(option.btn);
+    this.start = this.node(option.btn);
     console.log('地图', this.map)
 
   }
@@ -175,6 +178,8 @@ class Snake extends ConfigInterface {
         default:
           break;
       }
+      this.games.score += 1;
+
       console.log(this.body)
       this.removeElementByClass('food');
       this.food.displayFood();
@@ -193,7 +198,7 @@ class Snake extends ConfigInterface {
     for (let i = 1; i < this.body.length; i++) {
       let moveSnakeBody_x = this.body[i].x;
       let moveSnakeBody_y = this.body[i].y;
-      if (snakeHeader_x == moveSnakeBody_x && snakeHeader_y == moveSnakeBody_y) {
+      if (snakeHeader_x === moveSnakeBody_x && snakeHeader_y === moveSnakeBody_y) {
         this.#reloadGame();
         return;
       }
