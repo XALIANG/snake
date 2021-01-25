@@ -10,11 +10,12 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .main {
             width: 800px;
             height: 400px;
             margin: 50px auto;
+          
         }
 
         .btn {
@@ -28,13 +29,35 @@
             height: 400px;
             background: #ccc;
         }
+
+        .right {
+            width: 600px;
+           height: 200px;
+            position: fixed;
+            background-color: rgb(134, 160, 154);
+            display: flex;
+            flex-direction: column;
+            top: 0;
+            right: 0;
+        }
+
+        .clearfix:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
     </style>
 </head>
 
 <body>
-    <div class="main">
-        <button class="btn" id="begin">按钮</button>
+    <div class="main clearfix">
+        <button class="btn" id="begin">start</button>
         <div class="map" id="map"></div>
+        <div class="right">
+            <p class="score" >得分：</p>
+            <p class="snake_len" >长度:</p>
+            <p class="" >最高分:</p>
+        </div>
     </div>
     <script src="./js/index.js"></script>
 </body>
