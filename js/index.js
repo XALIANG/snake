@@ -17,8 +17,27 @@ class ConfigInterface {
         y: 0
       }
     ]
+    this.obstacle = [{
+        x: 10,
+        y: 0
+      }, {
+        x: 10,
+        y: 1
+      }, {
+        x: 10,
+        y: 2
+      },
+      {
+        x: 10,
+        y: 3
+      },
+      {
+        x: 10,
+        y: 4
+      }
+    ]
   }
-  $(el){
+  $(el) {
     return document.getElementById(el);
   }
   node(el) {
@@ -49,8 +68,28 @@ class ConfigInterface {
 
 class Games {
   constructor(option) {
-    this.score = 0 //分数
-    this.Grade = 100 //困难度
+    Object.assign(this, option);
+    this.score = 0; //分数
+    this.Grade = 100; //困难度
+    this.createObstacles();
+    console.log('障碍物', this.obstacle)
+  }
+  initGame() {
+    this.score = 0;
+  }
+  createObstacles() { //障碍物
+    for (let i = 0; i < this.obstacle.length; i++) {
+      const wall = document.createElement('div');
+      this.obstacle[i].wall = wall;
+      wall.style.width = this.width + 'px';
+      wall.style.height = this.height + 'px';
+      wall.style.backgroundColor = '#000';
+      wall.style.position = 'absolute';
+      wall.style.left = this.obstacle[i].x * this.width + 'px';
+      wall.style.top = this.obstacle[i].y * this.height + 'px';
+      wall.setAttribute("class", 'walls');
+      this.map.append(wall);
+    }
   }
 }
 
@@ -59,6 +98,7 @@ class Food {
     Object.assign(this, option);
     this.food_x = 0;
     this.food_y = 0;
+
   }
   displayFood() {
     const food = document.createElement('div');
@@ -80,9 +120,10 @@ class Snake extends ConfigInterface {
     super();
     this.map = this.node(option.el);
     this.food = new Food(this);
-    this.games = new Games();
-    console.log(this.food)
+    this.games = new Games(this);
     this.start = this.node(option.btn);
+    this.scoreDom = this.$('score');
+    this.scoresDom = this.$('scores'); //最高分
     console.log('地图', this.map)
 
   }
@@ -90,6 +131,7 @@ class Snake extends ConfigInterface {
     this.#onKeyboard();
     this.food.displayFood();
     this.#displayCreateBody();
+    this.body[0].flag['style'].backgroundColor = '#000';
     this.click(this.start, 'click', () => {
       clearInterval(this.clear);
       this.clear = setInterval(() => {
@@ -102,6 +144,9 @@ class Snake extends ConfigInterface {
     clearInterval(this.clear);
     this.removeElementByClass('snake');
     this.removeElementByClass('food');
+    this.scoresDom.innerHTML = this.games.score;
+    this.games.score = 0;
+    this.scoreDom.innerHTML = 0;
     this.body = [{
         x: 2,
         y: 0
@@ -118,6 +163,8 @@ class Snake extends ConfigInterface {
     this.#onKeyboard();
     this.food.displayFood();
     this.#displayCreateBody();
+
+
   }
   #run() {
     //脖子和和屁屁交换位置
@@ -147,6 +194,8 @@ class Snake extends ConfigInterface {
 
     //蛇头坐标和食物坐标
     if (this.body[0].x === this.food.food_x && this.body[0].y === this.food.food_y) {
+      this.games.score += 1;
+      this.scoreDom.innerHTML = this.games.score;
       let snakeTail_x = this.body[this.body.length - 1]['x'];
       let snakeTail_y = this.body[this.body.length - 1]['y'];
 
@@ -178,8 +227,6 @@ class Snake extends ConfigInterface {
         default:
           break;
       }
-      this.games.score += 1;
-
       console.log(this.body)
       this.removeElementByClass('food');
       this.food.displayFood();
@@ -194,7 +241,6 @@ class Snake extends ConfigInterface {
     //监听蛇自杀
     let snakeHeader_x = this.body[0]['x'];
     let snakeHeader_y = this.body[0]['y'];
-    console.log(snakeHeader_x)
     for (let i = 1; i < this.body.length; i++) {
       let moveSnakeBody_x = this.body[i].x;
       let moveSnakeBody_y = this.body[i].y;

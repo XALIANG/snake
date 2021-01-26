@@ -15,7 +15,7 @@
             width: 800px;
             height: 400px;
             margin: 50px auto;
-          
+
         }
 
         .btn {
@@ -31,12 +31,15 @@
         }
 
         .right {
-            width: 600px;
-           height: 200px;
+            width: 300px;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
             position: fixed;
             background-color: rgb(134, 160, 154);
             display: flex;
             flex-direction: column;
+          
             top: 0;
             right: 0;
         }
@@ -46,6 +49,17 @@
             display: block;
             clear: both;
         }
+
+        span {
+            color:aquamarine;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .score,
+        .snake_len,
+        .scores {
+            font-size: 20px;
+        }
     </style>
 </head>
 
@@ -54,9 +68,11 @@
         <button class="btn" id="begin">start</button>
         <div class="map" id="map"></div>
         <div class="right">
-            <p class="score" >得分：</p>
-            <p class="snake_len" >长度:</p>
-            <p class="" >最高分:</p>
+            <p class="score">得分：<span id="score">
+                0
+            </span></p>
+            <p class="snake_len">长度：<span id="len">0</span></p>
+            <p class="scores">最高分：<span id="scores">0</span></p>
         </div>
     </div>
     <script src="./js/index.js"></script>
